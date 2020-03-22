@@ -2,11 +2,13 @@ import discord
 import copy
 client = discord.Client()
 
-TOKEN = ""
+
 AUTHORIZED_ROLE = ["professeur"] #liste des rôles autorisés à utiliser la commande !appel
 BYPASSED_ROLE = ["professeur"] #liste des rôles qui ne seront jamais comptés comme absents
 TARGETED_ROLE = ["@everyone"] #rôles dont le bot doit verifier la présence des personnes possédant (un des rôles) dans le salon
 REMOVE_MSG_AFTER_CMD = True #condition si le bot supprime le message de avec la commande après celle ci
+TOKEN = "NjkwNTY0NzU4MDMzNzkzMDU0.XnTQ0w.iZ0QMftvYgJbpoMeci6trEJySnE"
+
 
 @client.event
 async def on_ready():
@@ -20,7 +22,7 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
         global TARGETED_ROLE
 
         if len(message.content)>6:
-            TARGETED_ROLE = message.content[7:] #on met un seul rôle ciblé si il est passé en paramètre
+            TARGETED_ROLE = message.content[7:].split(",") #on met un seul rôle ciblé si il est passé en paramètre
 
         
         if any(n in AUTHORIZED_ROLE for n in [i.name for i in message.author.roles]): #vérification que l'auteur du message possède le rôle autorisé
@@ -34,8 +36,6 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
                 
                 list_user_not_online = copy.copy(list_user_server) 
                 
-                
-                
                 mess = ""
                 offline_count = 0
                 
@@ -48,8 +48,10 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
                     is_targeted_role = not(any(i in BYPASSED_ROLE for i in temp_user_roles)) and (any(i in TARGETED_ROLE for i in temp_user_roles))
                         
 
+                    
                     #if not(list_user_not_online[x].bot) and is_targeted_role: #condition pour voir si la personne est ciblée et si elle n'est pas un bot
-                    if is_targeted_role:   
+                    if is_targeted_role:
+                    
                         if list_user_not_online[x].nick == None: #condition pour voir si l'utilisateur s'est renommé sur le serveur ou pas (True = pas renommé, False = renommé)
                             name = str(list_user_not_online[x])[:str(list_user_not_online[x]).find("#")] #si l'utilisateur n'est pas renommé on récupère son pseudo et on retire la partie après le #
                         else:
@@ -61,7 +63,11 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
                 
                 if mess != "": #vérification qu'il y a bien des personnes absentes (sinon la chaîne de caractère n'est pas modifiée)
                     
-                    mess = "Il y a {0} personne(s) absente(s) dans le salon {1}:\n\n".format(offline_count,message.author.voice.channel.name) + mess #ajout de l'entête du message
+                    
+                    if len(TARGETED_ROLE) == 1 and TARGETED_ROLE[0] != "@everyone":
+                        mess = f"Il y a {offline_count} personne(s) du groupe {TARGETED_ROLE[0]} absente(s) dans le salon {message.author.voice.channel.name}:\n\n" + mess #ajout de l'entête du message
+                    else:
+                        mess = f"Il y a {offline_count} personne(s) absente(s) dans le salon {message.author.voice.channel.name}:\n\n" + mess #ajout de l'entête du message
                     await message.channel.send(mess) #coroutine pour envoyer le message
                 
                 else:
@@ -76,13 +82,3 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
             await message.delete() #on supprime le message envoyé par la personne
 
 client.run(TOKEN)
-
-
-
-
-
-
-
-
-
-
