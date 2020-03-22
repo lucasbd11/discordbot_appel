@@ -7,7 +7,7 @@ AUTHORIZED_ROLE = ["professeur"] #liste des rôles autorisés à utiliser la com
 BYPASSED_ROLE = ["professeur"] #liste des rôles qui ne seront jamais comptés comme absents
 TARGETED_ROLE = ["@everyone"] #rôles dont le bot doit verifier la présence des personnes possédant (un des rôles) dans le salon
 REMOVE_MSG_AFTER_CMD = True #condition si le bot supprime le message de avec la commande après celle ci
-TOKEN = "NjkwNTY0NzU4MDMzNzkzMDU0.XnTQ0w.iZ0QMftvYgJbpoMeci6trEJySnE"
+TOKEN = "token"
 
 
 @client.event
