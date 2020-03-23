@@ -49,8 +49,7 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
                         
 
                     
-                    #if not(list_user_not_online[x].bot) and is_targeted_role: #condition pour voir si la personne est ciblée et si elle n'est pas un bot
-                    if is_targeted_role:
+                    if not(list_user_not_online[x].bot) and is_targeted_role: #condition pour voir si la personne est ciblée et si elle n'est pas un bot
                     
                         if list_user_not_online[x].nick == None: #condition pour voir si l'utilisateur s'est renommé sur le serveur ou pas (True = pas renommé, False = renommé)
                             name = str(list_user_not_online[x])[:str(list_user_not_online[x]).find("#")] #si l'utilisateur n'est pas renommé on récupère son pseudo et on retire la partie après le #
