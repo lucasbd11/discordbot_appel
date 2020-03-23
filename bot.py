@@ -9,7 +9,7 @@ TARGETED_ROLE = ["@everyone"] #rôles dont le bot doit verifier la présence des
 REMOVE_MSG_AFTER_CMD = True #condition si le bot supprime le message de avec la commande après celle ci
 TOKEN = "token"
 
-
+print("Connexion...")
 @client.event
 async def on_ready():
     print("Bot connecté !")
