@@ -5,7 +5,6 @@ client = discord.Client()
 
 AUTHORIZED_ROLE = ["professeur"] #liste des rôles autorisés à utiliser la commande !appel
 BYPASSED_ROLE = ["professeur"] #liste des rôles qui ne seront jamais comptés comme absents
-TARGETED_ROLE = ["@everyone"] #rôles dont le bot doit verifier la présence des personnes possédant (un des rôles) dans le salon
 REMOVE_MSG_AFTER_CMD = True #condition si le bot supprime le message de avec la commande après celle ci
 TOKEN = "token"
 
@@ -19,12 +18,12 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
     
     if message.content.startswith("!appel") and not(message.author.bot): #vérification que c'est la commande et que la personne n'est pas un bot (sécurité)
 
-        global TARGETED_ROLE
+        TARGETED_ROLE = ["@everyone"] #rôles dont le bot doit verifier la présence des personnes possédant (un des rôles) dans le salon
 
         if len(message.content)>6:
             TARGETED_ROLE = message.content[7:].split(",") #on met un seul rôle ciblé si il est passé en paramètre
 
-        
+        print(TARGETED_ROLE)
         if any(n in AUTHORIZED_ROLE for n in [i.name for i in message.author.roles]): #vérification que l'auteur du message possède le rôle autorisé
             if message.author.voice != None: #vérification que l'auteur du message est dans un salon vocal
                 list_user_server = message.author.guild.members #création de la liste des membres du serveur
@@ -50,6 +49,7 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
 
                     
                     if not(list_user_not_online[x].bot) and is_targeted_role: #condition pour voir si la personne est ciblée et si elle n'est pas un bot
+                    #if is_targeted_role:
                     
                         if list_user_not_online[x].nick == None: #condition pour voir si l'utilisateur s'est renommé sur le serveur ou pas (True = pas renommé, False = renommé)
                             name = str(list_user_not_online[x])[:str(list_user_not_online[x]).find("#")] #si l'utilisateur n'est pas renommé on récupère son pseudo et on retire la partie après le #
@@ -79,5 +79,6 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
             await message.channel.send("Vous n'avez pas la premission d'utiliser cette commande.") #un message est envoyé si la personne n'a pas la permission d'utiliser la commande
         if REMOVE_MSG_AFTER_CMD:
             await message.delete() #on supprime le message envoyé par la personne
+        
 
 client.run(TOKEN)
