@@ -23,7 +23,7 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
         if len(message.content)>6:
             TARGETED_ROLE = message.content[7:].split(",") #on met un seul rôle ciblé si il est passé en paramètre
 
-        print(TARGETED_ROLE)
+
         if any(n in AUTHORIZED_ROLE for n in [i.name for i in message.author.roles]): #vérification que l'auteur du message possède le rôle autorisé
             if message.author.voice != None: #vérification que l'auteur du message est dans un salon vocal
                 list_user_server = message.author.guild.members #création de la liste des membres du serveur
