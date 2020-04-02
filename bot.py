@@ -1,8 +1,8 @@
 import discord
 import copy
+
+
 client = discord.Client()
-
-
 AUTHORIZED_ROLE = ["professeur"] #liste des rôles autorisés à utiliser la commande !appel
 BYPASSED_ROLE = ["professeur"] #liste des rôles qui ne seront jamais comptés comme absents
 REMOVE_MSG_AFTER_CMD = True #condition si le bot supprime le message de avec la commande après celle ci
@@ -22,7 +22,7 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
 
         if len(message.content)>6:
             TARGETED_ROLE = message.content[7:].split(",") #on met un seul rôle ciblé si il est passé en paramètre
-
+        print(TARGETED_ROLE)
 
         if any(n in AUTHORIZED_ROLE for n in [i.name for i in message.author.roles]): #vérification que l'auteur du message possède le rôle autorisé
             if message.author.voice != None: #vérification que l'auteur du message est dans un salon vocal
@@ -44,10 +44,11 @@ async def on_message(message): #fonction executée lorsqu'il y a un nouveau mess
                     
                     #on définit si la personne est ciblée par la commande ou pas (bon rôle)
 
-                    is_targeted_role = not(any(i in BYPASSED_ROLE for i in temp_user_roles)) and (any(i in TARGETED_ROLE for i in temp_user_roles))
-                        
-
-                    
+                    if len(TARGETED_ROLE) > 1:
+                        is_targeted_role = not(any(i in BYPASSED_ROLE for i in temp_user_roles)) and (min([i in temp_user_roles[1:] for i in TARGETED_ROLE]))
+                    else:
+                        is_targeted_role = not(any(i in BYPASSED_ROLE for i in temp_user_roles)) and (any((i in TARGETED_ROLE for i in temp_user_roles)))
+             
                     if not(list_user_not_online[x].bot) and is_targeted_role: #condition pour voir si la personne est ciblée et si elle n'est pas un bot
                     #if is_targeted_role:
                     
