@@ -12,8 +12,8 @@ BYPASSED_ROLE = ["professeur"] #liste des rôles qui ne seront jamais comptés c
 saved_data = []
 time_auto_refresh = 60
 REMOVE_MSG_AFTER_CMD = True #condition si le bot supprime le message de avec la commande après celle ci
-TOKEN = "token"
-
+#TOKEN = "NjkwNTY0NzU4MDMzNzkzMDU0.XnkGEQ.H1ax_AZLvvOOad7S6wYjAQeFRGk" #PROD TOKEN
+TOKEN = "Njk1MzUyMDI1MjAyMDMyNzcy.XoY7Fg.WdlEWSXqbZWJzNtf7HBmmVpHPaI" #DEV TOKEN
 
 
 
@@ -25,6 +25,8 @@ print("Connexion...")
 @client.event
 async def on_ready():
     print("Bot connecté ! ",datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")," UTC")
+
+
 
 
 async def auto_refresh():
@@ -206,7 +208,7 @@ async def appel(ctx,*param):
                 await message.channel.send("Vous devez rentrer dans un salon vocal avant d'executer cette commande.")#un  message est envoyé si la personne n'est pas dans un salon vocal
             
         else:
-            await message.channel.send("Vous n'avez pas la premission d'utiliser cette commande.") #un message est envoyé si la personne n'a pas la permission d'utiliser la commande
+            await message.channel.send("Désolé "+ message.author.mention +",vous n'avez pas la premission d'utiliser cette commande.") #un message est envoyé si la personne n'a pas la permission d'utiliser la commande
         
         if REMOVE_MSG_AFTER_CMD:
             await message.delete() #on supprime le message envoyé par la personne
@@ -215,4 +217,3 @@ async def appel(ctx,*param):
 
 client.loop.create_task(auto_refresh())
 client.run(TOKEN)
-
